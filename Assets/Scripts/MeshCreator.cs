@@ -89,6 +89,8 @@ public class MeshCreator : MonoBehaviour
         newVertex[2] = new Vector3 (x + 1 , y-1 , 0);
         newVertex[3] = new Vector3 (x  , y-1 , 0);
         List<int> vertexIndex = new List<int>();
+
+        //merging vertex
         foreach(Vector3 vert in newVertex){
             var index = newVertices.IndexOf(vert);
             if(index != -1){
