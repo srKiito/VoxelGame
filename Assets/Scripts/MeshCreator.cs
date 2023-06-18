@@ -35,6 +35,9 @@ public class MeshCreator : MonoBehaviour
 
     private Vector3[] lColVertices = new Vector3[4];
     private int lColVerCount;
+
+    private Vector3[] fColVertices = new Vector3[4];
+    private int fColVerCount;
     
     void Start()
     {
@@ -83,34 +86,23 @@ public class MeshCreator : MonoBehaviour
 
     private void GenSquare(int x, int y, Vector2 texture)
     {
-        Vector3[] newVertex = new Vector3[4];
-        newVertex[0] = new Vector3 (x  , y  ,0);
-        newVertex[1] = new Vector3 (x + 1 , y  , 0);
-        newVertex[2] = new Vector3 (x + 1 , y-1 , 0);
-        newVertex[3] = new Vector3 (x  , y-1 , 0);
-        List<int> vertexIndex = new List<int>();
-        foreach(Vector3 vert in newVertex){
-            var index = newVertices.IndexOf(vert);
-            if(index != -1){
-                vertexIndex.Add(index);
-            }else {
-                newVertices.Add(vert);
-                vertexIndex.Add(newVertices.Count-1);
-            }
-        }
+        newVertices.Add( new Vector3 (x  , y  , 0 ));
+        newVertices.Add( new Vector3 (x + 1 , y  , 0 ));
+        newVertices.Add( new Vector3 (x + 1 , y-1 , 0 ));
+        newVertices.Add( new Vector3 (x  , y-1 , 0 ));
         
-        newTriangles.Add(vertexIndex[0]);
-        newTriangles.Add(vertexIndex[1]);
-        newTriangles.Add(vertexIndex[3]);
-        newTriangles.Add(vertexIndex[1]);
-        newTriangles.Add(vertexIndex[2]);
-        newTriangles.Add(vertexIndex[3]);
+        newTriangles.Add(squareCount*4);
+        newTriangles.Add((squareCount*4)+1);
+        newTriangles.Add((squareCount*4)+3);
+        newTriangles.Add((squareCount*4)+1);
+        newTriangles.Add((squareCount*4)+2);
+        newTriangles.Add((squareCount*4)+3);
         
-        newUV.Add(new Vector2 (tUnit *texture.x, tUnit *texture.y + tUnit));
-        newUV.Add(new Vector2 (tUnit *texture.x + tUnit, tUnit *texture.y + tUnit));
-        newUV.Add(new Vector2 (tUnit *texture.x + tUnit, tUnit *texture.y));
-        newUV.Add(new Vector2 (tUnit *texture.x, tUnit *texture.y));
-
+        newUV.Add(new Vector2 (tUnit * texture.x, tUnit * texture.y + tUnit));
+        newUV.Add(new Vector2 (tUnit*texture.x+tUnit, tUnit*texture.y+tUnit));
+        newUV.Add(new Vector2 (tUnit * texture.x + tUnit, tUnit * texture.y));
+        newUV.Add(new Vector2 (tUnit * texture.x, tUnit * texture.y));
+        
         squareCount++;
     }
 
@@ -299,7 +291,12 @@ public class MeshCreator : MonoBehaviour
             tColVerCount = 0;
         }*/
         
-
+        //Front Face collision
+        if(Block(x, y+1) != 0){
+            if(Block(x+1, y) != 0){
+                fColVertices[0] = new Vector3(x, y, 0);
+            }
+        }
     }
 
     private void ColliderTriangles()
