@@ -146,160 +146,52 @@ public class MeshCreator : MonoBehaviour
 
     private void GenCollider(int x, int y)
     {
-        /*if(Block(x,y+1)==0){
-            colVertices.Add( new Vector3 (x  , y  , 1));
-            colVertices.Add( new Vector3 (x + 1 , y  , 1));
-            colVertices.Add( new Vector3 (x + 1 , y  , 0 ));
-            colVertices.Add( new Vector3 (x  , y  , 0 ));
-            
-            ColliderTriangles();
-            
-            colCount++;
+        //Top
+        if(Block(x,y+1)==0){
+        colVertices.Add( new Vector3 (x  , y  , 1));
+        colVertices.Add( new Vector3 (x + 1 , y  , 1));
+        colVertices.Add( new Vector3 (x + 1 , y  , 0 ));
+        colVertices.Add( new Vector3 (x  , y  , 0 ));
+        
+        ColliderTriangles();
+        
+        colCount++;
         }
         
         //bot
         if(Block(x,y-1)==0){
-            if(Block(x+1,y)==0 && Block(x-1,y)==0){
-                colVertices.Add( new Vector3 (x  , y -1 , 0));
-                colVertices.Add( new Vector3 (x + 1 , y -1 , 0));
-                colVertices.Add( new Vector3 (x + 1 , y -1 , 1));
-                colVertices.Add( new Vector3 (x  , y -1 , 1));
-                
-                ColliderTriangles();
-                
-                colCount++;
-            }
-
-            if(Block(x+1,y)!=0 && Block(x-1,y)==0){
-                tColVertices[0] = new Vector3 (x  , y -1 , 0);
-                tColVertices[3] = new Vector3 (x  , y -1 , 1);
-                Debug.Log(tColVertices.Length);
-
-                tColVerCount+= 2;
-            }
-
-            if(Block(x+1,y)==0 && Block(x-1,y)!=0){
-                tColVertices[1] = new Vector3 (x + 1 , y -1 , 0);
-                tColVertices[2] = new Vector3 (x + 1 , y -1 , 1);
-                Debug.Log(tColVertices.Length);
-
-                tColVerCount+= 2;
-            }
-            
-        }
-
-        if(tColVerCount == 4){
-            colVertices.AddRange(tColVertices);
-            ColliderTriangles();
-                
-            colCount++;
-            tColVerCount = 0;
+        colVertices.Add( new Vector3 (x  , y -1 , 0));
+        colVertices.Add( new Vector3 (x + 1 , y -1 , 0));
+        colVertices.Add( new Vector3 (x + 1 , y -1 , 1 ));
+        colVertices.Add( new Vector3 (x  , y -1 , 1 ));
+        
+        ColliderTriangles();
+        colCount++;
         }
         
         //left
         if(Block(x-1,y)==0){
-            if(Block(x,y+1)==0 && Block(x,y-1)==0){
-                colVertices.Add( new Vector3 (x  , y -1 , 1));
-                colVertices.Add( new Vector3 (x  , y  , 1));
-                colVertices.Add( new Vector3 (x  , y  , 0 ));
-                colVertices.Add( new Vector3 (x  , y -1 , 0 ));
-                
-                ColliderTriangles();
-                
-                colCount++;
-            }
-
-            if(Block(x,y+1)!=0 && Block(x,y-1)==0){
-                rColVertices[0] = new Vector3 (x  , y -1 , 1);
-                rColVertices[3] = new Vector3 (x  , y -1 , 0 );
-                Debug.Log(rColVertices.Length);
-
-                rColVerCount+= 2;
-            }
-
-            if(Block(x,y+1)==0 && Block(x,y-1)!=0){
-                rColVertices[1] = new Vector3 (x  , y  , 1);
-                rColVertices[2] = new Vector3 (x  , y  , 0 );
-                Debug.Log(rColVertices.Length);
-
-                rColVerCount+= 2;
-            }
-            
-        }
-
-        if(rColVerCount == 4){
-            colVertices.AddRange(rColVertices);
-            ColliderTriangles();
-                
-            colCount++;
-            rColVerCount = 0;
+        colVertices.Add( new Vector3 (x  , y -1 , 1));
+        colVertices.Add( new Vector3 (x  , y  , 1));
+        colVertices.Add( new Vector3 (x  , y  , 0 ));
+        colVertices.Add( new Vector3 (x  , y -1 , 0 ));
+        
+        ColliderTriangles();
+        
+        colCount++;
         }
         
         //right
         if(Block(x+1,y)==0){
-            colVertices.Add( new Vector3 (x +1 , y  , 1));
-            colVertices.Add( new Vector3 (x +1 , y -1 , 1));
-            colVertices.Add( new Vector3 (x +1 , y -1 , 0 ));
-            colVertices.Add( new Vector3 (x +1 , y  , 0 ));
-            
-            ColliderTriangles();
-            
-            colCount++;
-        }
-
-        colVertices.Add( new Vector3 (x  , y  ,0));
-        colVertices.Add( new Vector3 (x + 1 , y  , 0));
-        colVertices.Add( new Vector3 (x + 1 , y-1 , 0));
-        colVertices.Add( new Vector3 (x  , y-1 , 0));
-
-        ColliderTriangles();
-
-        colCount++;
-
-        colVertices.Add( new Vector3 (x  , y  ,1));
-        colVertices.Add( new Vector3 (x + 1 , y  , 1));
-        colVertices.Add( new Vector3 (x + 1 , y-1 , 1));
-        colVertices.Add( new Vector3 (x  , y-1 , 1));
-
-        ColliderTriangles();
-
-        colCount++;
-
-        /*if(Block(x+1,y)==0 && Block(x-1,y)==0){
-                colVertices.Add( new Vector3 (x  , y -1 , 0));
-                colVertices.Add( new Vector3 (x + 1 , y -1 , 0));
-                colVertices.Add( new Vector3 (x + 1 , y -1 , 1));
-                colVertices.Add( new Vector3 (x  , y -1 , 1));
-                
-                ColliderTriangles();
-                
-                colCount++;
-            }
-
-            if(Block(x+1,y)!=0 && Block(x-1,y)==0){
-                tColVertices[0] = new Vector3 (x  , y -1 , 0);
-                tColVertices[3] = new Vector3 (x  , y -1 , 1);
-                Debug.Log(tColVertices.Length);
-
-                tColVerCount+= 2;
-            }
-
-            if(Block(x+1,y)==0 && Block(x-1,y)!=0){
-                tColVertices[1] = new Vector3 (x + 1 , y -1 , 0);
-                tColVertices[2] = new Vector3 (x + 1 , y -1 , 1);
-                Debug.Log(tColVertices.Length);
-
-                tColVerCount+= 2;
-        }
-        if(tColVerCount == 4){
-            colVertices.AddRange(tColVertices);
-            ColliderTriangles();
-                
-            colCount++;
-            tColVerCount = 0;
-        }*/
+        colVertices.Add( new Vector3 (x +1 , y  , 1));
+        colVertices.Add( new Vector3 (x +1 , y -1 , 1));
+        colVertices.Add( new Vector3 (x +1 , y -1 , 0 ));
+        colVertices.Add( new Vector3 (x +1 , y  , 0 ));
         
-
+        ColliderTriangles();
+        
+        colCount++;
+        }
     }
 
     private void ColliderTriangles()
