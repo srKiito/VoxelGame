@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -40,18 +39,11 @@ public class MeshCreator : MonoBehaviour
     {
         mesh = GetComponent<MeshFilter>().mesh;
         col = GetComponent<MeshCollider> ();
-        
-        blocks = new byte[10, 10];
+
         GenTerrain();
         BuildMesh();
         UpdateMesh();
 
-    }
-
-    
-    private void Update()
-    {
-        
     }
 
     private void UpdateMesh()
@@ -68,7 +60,6 @@ public class MeshCreator : MonoBehaviour
         newTriangles.Clear();
         newUV.Clear();
 
-
         Mesh newMesh = new Mesh();
         newMesh.vertices = colVertices.ToArray();
         newMesh.triangles = colTriangles.ToArray();
@@ -77,54 +68,75 @@ public class MeshCreator : MonoBehaviour
         colVertices.Clear();
         colTriangles.Clear();
         colCount=0;
-        Debug.Log(mesh.vertices.Length);
-        Debug.Log(mesh.triangles.Length);
     }
 
     private void GenSquare(int x, int y, Vector2 texture)
     {
-        Vector3[] newVertex = new Vector3[4];
-        newVertex[0] = new Vector3 (x  , y  ,0);
-        newVertex[1] = new Vector3 (x + 1 , y  , 0);
-        newVertex[2] = new Vector3 (x + 1 , y-1 , 0);
-        newVertex[3] = new Vector3 (x  , y-1 , 0);
-        List<int> vertexIndex = new List<int>();
-        foreach(Vector3 vert in newVertex){
-            var index = newVertices.IndexOf(vert);
-            if(index != -1){
-                vertexIndex.Add(index);
-            }else {
-                newVertices.Add(vert);
-                vertexIndex.Add(newVertices.Count-1);
-            }
-        }
+        newVertices.Add( new Vector3 (x  , y  , 0 ));
+        newVertices.Add( new Vector3 (x + 1 , y  , 0 ));
+        newVertices.Add( new Vector3 (x + 1 , y-1 , 0 ));
+        newVertices.Add( new Vector3 (x  , y-1 , 0 ));
         
-        newTriangles.Add(vertexIndex[0]);
-        newTriangles.Add(vertexIndex[1]);
-        newTriangles.Add(vertexIndex[3]);
-        newTriangles.Add(vertexIndex[1]);
-        newTriangles.Add(vertexIndex[2]);
-        newTriangles.Add(vertexIndex[3]);
+        newTriangles.Add(squareCount*4);
+        newTriangles.Add((squareCount*4)+1);
+        newTriangles.Add((squareCount*4)+3);
+        newTriangles.Add((squareCount*4)+1);
+        newTriangles.Add((squareCount*4)+2);
+        newTriangles.Add((squareCount*4)+3);
         
-        newUV.Add(new Vector2 (tUnit *texture.x, tUnit *texture.y + tUnit));
-        newUV.Add(new Vector2 (tUnit *texture.x + tUnit, tUnit *texture.y + tUnit));
-        newUV.Add(new Vector2 (tUnit *texture.x + tUnit, tUnit *texture.y));
-        newUV.Add(new Vector2 (tUnit *texture.x, tUnit *texture.y));
-
+        newUV.Add(new Vector2 (tUnit * texture.x, tUnit * texture.y + tUnit));
+        newUV.Add(new Vector2 (tUnit*texture.x+tUnit, tUnit*texture.y+tUnit));
+        newUV.Add(new Vector2 (tUnit * texture.x + tUnit, tUnit * texture.y));
+        newUV.Add(new Vector2 (tUnit * texture.x, tUnit * texture.y));
+        
         squareCount++;
     }
 
     private void GenTerrain()
     {
+        blocks=new byte[96,128];
+  
         for(int px=0;px<blocks.GetLength(0);px++){
+            int stone= Noise(px,0, 80,15,1);
+            stone+= Noise(px,0, 50,30,1);
+            stone+= Noise(px,0, 10,10,1);
+            stone+=75;
+            
+            int dirt = Noise(px,0, 100,35,1);
+            dirt+= Noise(px,0, 50,30,1);
+            dirt+=75;
+            
             for(int py=0;py<blocks.GetLength(1);py++){
-                if(py==blocks.GetLength(1)){
-                    blocks[px,py]=2;
-                } else{
+                if(py<stone){
                     blocks[px,py]=1;
+                    // Debug.Log("predra" + px);
+
+                    //The next three lines make dirt spots in random places
+                    if(Noise(px,py,12,16,1)>10){
+                        
+                    
+                    }
+                    
+                    //The next three lines remove dirt and rock to make caves in certain places
+                    if(Noise(px,py*2,16,14,1)>10){ //Caves
+                        blocks[px,py]=0;
+                    }
+                } else if(py<dirt) {
+                    blocks[px,py]=2;
+                    // Debug.Log("terra" + px);
                 }
             }
         }
+
+        /*for(int px=0;px<blocks.GetLength(0);px++){
+            for(int py=0;py<blocks.GetLength(1);py++){
+                if(py==blocks.GetLength(1)-1){
+                    blocks[px,py]=2;
+                } else if(py<blocks.GetLength(1)-1){
+                    blocks[px,py]=1;
+                }
+            }
+        }*/
     }
 
      
@@ -132,13 +144,14 @@ public class MeshCreator : MonoBehaviour
     {
         for(int px=0;px<blocks.GetLength(0);px++){
             for(int py=0;py<blocks.GetLength(1);py++){
-                if(blocks[px,py] == 0)return;
-
-                GenCollider(px, py);
+                if(blocks[px,py] != 0) GenCollider(px, py);;
+         
                 if(blocks[px,py]==1){
                     GenSquare(px,py,tGrass);
+                    Debug.Log(blocks[px,py] + "Grama" + px);
                 } else if(blocks[px,py]==2){
                     GenSquare(px,py,tStone);
+                    Debug.Log(blocks[px,py] + "Pedra" + px);
                 }    
             }
         }
@@ -202,7 +215,6 @@ public class MeshCreator : MonoBehaviour
         colTriangles.Add((colCount*4)+1);
         colTriangles.Add((colCount*4)+2);
         colTriangles.Add((colCount*4)+3);
-        // Debug.Log("foi");
     }
 
     private byte Block(int x, int y)
@@ -217,4 +229,5 @@ public class MeshCreator : MonoBehaviour
         return (int) (Mathf.Pow ((Mathf.PerlinNoise(x/scale,y/scale)*mag), (exp))); 
   
     }
+
 }
