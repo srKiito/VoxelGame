@@ -144,7 +144,7 @@ public class MeshCreator : MonoBehaviour
     {
         for(int px=0;px<blocks.GetLength(0);px++){
             for(int py=0;py<blocks.GetLength(1);py++){
-                if(blocks[px,py] != 0) GenCollider(px, py);;
+                if(blocks[px,py] != 0) GenCollider(px, py);
          
                 if(blocks[px,py]==1){
                     GenSquare(px,py,tGrass);
