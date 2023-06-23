@@ -224,10 +224,15 @@ public class MeshCreator : MonoBehaviour
         return blocks[x,y];
     }
 
-    private int Noise (int x, int y, float scale, float mag, float exp){
-
+    private int Noise (int x, int y, float scale, float mag, float exp)
+    {
         return (int) (Mathf.Pow ((Mathf.PerlinNoise(x/scale,y/scale)*mag), (exp))); 
-  
+    }
+
+    public void UpdateTerrain()
+    {
+        BuildMesh();
+        UpdateMesh();
     }
 
 }
