@@ -15,14 +15,13 @@ public static class VoxelHelper
 
     public static MeshData GetMeshData(ChunkData chunk, int x, int y, int z, MeshData meshData, VoxelsType voxeltype)
     {
-        // Debug.Log("GetMeshData preif");
         if (voxeltype == VoxelsType.Air || voxeltype == VoxelsType.Nothing)
             return meshData;
 
         foreach (Direction direction in directions)
         {
-            var neighbourBlockCoordinates = new Vector3Int(x, y, z) + direction.GetVector();
-            var neighbourBlockType = Chunk.GetVoxelFromChunkCoordinates(chunk, neighbourBlockCoordinates);
+            var neighbourVoxelCoordinates = new Vector3Int(x, y, z) + direction.GetVector();
+            var neighbourBlockType = Chunk.GetVoxelFromChunkCoordinates(chunk, neighbourVoxelCoordinates);
 
             if (neighbourBlockType != VoxelsType.Nothing && VoxelDataManager.voxelTextureDataDictionary[neighbourBlockType].isSolid == false)
             {
@@ -54,7 +53,6 @@ public static class VoxelHelper
     }
     public static MeshData GetFaceDataIn(Direction direction, ChunkData chunk, int x, int y, int z, MeshData meshData, VoxelsType voxelsType)
     {
-        Debug.Log("Get Face DataIn");
         GetFaceVertices(direction, x, y, z, meshData, voxelsType);
         meshData.AddQuadTriangles(VoxelDataManager.voxelTextureDataDictionary[voxelsType].generatesCollider);
         meshData.UV.AddRange(FaceUVs(direction, voxelsType));
@@ -64,7 +62,6 @@ public static class VoxelHelper
 
     public static void GetFaceVertices(Direction direction, int x, int y, int z, MeshData meshData, VoxelsType voxelsType)
     {
-        Debug.Log("rodou");
         var generatesCollider = VoxelDataManager.voxelTextureDataDictionary[voxelsType].generatesCollider;
         //order of vertices matters for the normals and how we render the mesh
         switch (direction)
@@ -109,7 +106,6 @@ public static class VoxelHelper
             default:
                 break;
         }
-        Debug.Log(meshData.vertices.Count);
     }
 
     public static Vector2[] FaceUVs(Direction direction, VoxelsType voxelsType)

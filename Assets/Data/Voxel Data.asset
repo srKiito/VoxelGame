@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Voxel Data
   m_EditorClassIdentifier: 
   textureSizeX: 0.1
-  textureSizeY: 0
+  textureSizeY: 0.1
   textureDataList:
   - voxelsType: 1
     up: {x: 0, y: 0}
@@ -24,7 +24,7 @@ MonoBehaviour:
   - voxelsType: 2
     up: {x: 6, y: 8}
     down: {x: 7, y: 4}
-    side: {x: 7, y: 6}
+    side: {x: 7, y: 5}
     isSolid: 1
     generatesCollider: 1
   - voxelsType: 3
@@ -67,8 +67,8 @@ MonoBehaviour:
     up: {x: 0, y: 3}
     down: {x: 0, y: 3}
     side: {x: 0, y: 3}
-    isSolid: 1
-    generatesCollider: 1
+    isSolid: 0
+    generatesCollider: 0
   - voxelsType: 10
     up: {x: 3, y: 3}
     down: {x: 3, y: 3}
