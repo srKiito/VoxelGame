@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8fe5f0f32f58a4e04a749902d1ecce63, type: 3}
-  m_Name: NoiseSettings
+  m_Name: DomainWarpingSettingsY
   m_EditorClassIdentifier: 
-  noiseZoom: 0.0075
-  octaves: 5
-  offset: {x: 123213, y: 31231}
-  WorldOffset: {x: 89, y: 170}
-  persistance: 0.5
-  redistributionModifier: 1
-  exponent: 0.5
+  noiseZoom: 0.01
+  octaves: 3
+  offset: {x: 1000, y: 9000}
+  WorldOffset: {x: 0, y: 0}
+  persistance: 0.8
+  redistributionModifier: 1.2
+  exponent: 5

@@ -5,9 +5,11 @@ public class BiomeGenerator : MonoBehaviour
 {
     public int waterThreshold = 50;
     public NoiseSettings biomeNoiseSettings;
-
+    public DomainWarping domainWarping;
     public VoxelsLayerHandler startVoxelLayer;
     public List<VoxelsLayerHandler> additionalLayerHandlers;
+
+    [SerializeField] private bool useWarping;
 
     public ChunkData ProcessChunkCreation(ChunkData data, int x, int z, Vector2Int mapSeedOffset)
     {
@@ -26,7 +28,15 @@ public class BiomeGenerator : MonoBehaviour
 
     private int GetSurfaceHeightNoise(int x, int z, int chunkHeight)
     {
-        float terrainHeight = Noise.OctavePerlin(x, z, biomeNoiseSettings);
+        float terrainHeight;
+        if (useWarping)
+        {
+            terrainHeight = Noise.OctavePerlin(x, z, biomeNoiseSettings);
+        }
+        else
+        {
+            terrainHeight = domainWarping.GenerateDomainNoise(x, z, biomeNoiseSettings);
+        }
         terrainHeight = Noise.Redistribution(terrainHeight, biomeNoiseSettings);
         int surfaceHeight = (int)Noise.RemapValueZeroToOneInt(terrainHeight, 0, chunkHeight);
         return surfaceHeight;

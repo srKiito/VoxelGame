@@ -7,13 +7,14 @@ public class StoneLayerHandler : VoxelsLayerHandler
     [Range(0, 1)] public float stoneThreshold = 0.5f;
 
     [SerializeField] private NoiseSettings stoneNoiseSettings;
+    [SerializeField] private DomainWarping domainWarping;
 
     protected override bool TryHandling(ChunkData chunkData, Vector3Int position, int surfaceHeight, Vector2Int mapSeedOffset)
     {
         if (chunkData.worldPosition.y > surfaceHeight) return false;
 
         stoneNoiseSettings.WorldOffset = mapSeedOffset;
-        float stoneNoise = Noise.OctavePerlin(chunkData.worldPosition.x + position.x, chunkData.worldPosition.z + position.z, stoneNoiseSettings);
+        float stoneNoise = domainWarping.GenerateDomainNoise(chunkData.worldPosition.x + position.x, chunkData.worldPosition.z + position.z, stoneNoiseSettings);
 
         int endPosition = surfaceHeight;
         if (chunkData.worldPosition.y < 0)
